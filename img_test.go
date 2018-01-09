@@ -6,7 +6,9 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
+	"os"
 	"testing"
 
 	"github.com/codeliveroil/img/viz"
@@ -24,7 +26,7 @@ func read(filename string, t *testing.T) string {
 	return string(bytes)
 }
 
-func generate(testfile string, loopCount int, delayMultiplier float64, width int, t *testing.T) viz.Image {
+func export(testfile string, loopCount int, delayMultiplier float64, width int, t *testing.T) viz.Image {
 	img := viz.Image{
 		Filename:        testfile,
 		ExportFilename:  "/tmp/img_test.sh",
@@ -33,11 +35,13 @@ func generate(testfile string, loopCount int, delayMultiplier float64, width int
 		UserWidth:       width,
 	}
 
-	err := img.Init()
-	check(err, t)
-	writer, err := viz.NewFileWriter(img.ExportFilename)
-	check(err, t)
-	img.Draw(writer)
+	os.Args = []string{"img", "-o", img.ExportFilename,
+		"-l", fmt.Sprintf("%v", img.LoopCount),
+		"-d", fmt.Sprintf("%v", img.DelayMultiplier),
+		"-w", fmt.Sprintf("%v", img.UserWidth),
+		testfile,
+	}
+	main() //invoke main to test flag parsing as well.
 
 	return img
 }
@@ -50,18 +54,18 @@ func validate(expected string, got viz.Image, t *testing.T) {
 }
 
 func TestStaticImage(t *testing.T) {
-	img := generate("testdata/color_matrix.png", 1, 1.0, 80, t)
+	img := export("testdata/color_matrix.png", 1, 1.0, 80, t)
 	validate("testdata/color_matrix.sh", img, t)
 }
 
 func TestGIF(t *testing.T) {
 	// Test different GIF disposals.
 	for _, d := range []string{"Unspecified", "None", "NoneTransparency", "Background"} {
-		img := generate("testdata/disposal"+d+".gif", 1, 1.0, 0, t)
+		img := export("testdata/disposal"+d+".gif", 1, 1.0, 0, t)
 		validate("testdata/disposal"+d+".sh", img, t)
 	}
 
 	// Test all parameters
-	img := generate("testdata/disposalNone.gif", 3, 10, 60, t)
+	img := export("testdata/disposalNone.gif", 3, 10, 60, t)
 	validate("testdata/all.sh", img, t)
 }
