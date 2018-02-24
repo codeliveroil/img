@@ -8,21 +8,19 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"math"
 	"os"
 	"testing"
 
+	"github.com/codeliveroil/img/terminal"
 	"github.com/codeliveroil/img/viz"
 )
 
-func check(err error, t *testing.T) {
+func read(filename string, t *testing.T) string {
+	bytes, err := ioutil.ReadFile(filename)
 	if err != nil {
 		t.Error("expecting no error, got", err)
 	}
-}
-
-func read(filename string, t *testing.T) string {
-	bytes, err := ioutil.ReadFile(filename)
-	check(err, t)
 	return string(bytes)
 }
 
@@ -59,7 +57,13 @@ func TestStaticImage(t *testing.T) {
 }
 
 func TestGIF(t *testing.T) {
-	// Test different GIF disposals.
+	// Override Size() because the Unix system calls in
+	// terminal.GetSize() fail with "operation not permitted"
+	// when executed in the test environment
+	terminal.Size = func() (int, int, error) {
+		return math.MaxInt32, math.MaxInt32, nil
+	}
+	// Test different kinds of GIF disposals.
 	for _, d := range []string{"Unspecified", "None", "NoneTransparency", "Background"} {
 		img := export("testdata/disposal"+d+".gif", 1, 1.0, 0, t)
 		validate("testdata/disposal"+d+".sh", img, t)

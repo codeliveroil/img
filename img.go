@@ -13,12 +13,10 @@ import (
 	"os"
 	"path"
 
-	"github.com/codeliveroil/img/util"
 	"github.com/codeliveroil/img/viz"
 )
 
 func main() {
-	//Parse command line args
 	args := os.Args
 	flags := flag.NewFlagSet(os.Args[0], flag.ExitOnError)
 	print := func(msg string, args ...interface{}) {
@@ -65,7 +63,7 @@ func main() {
 	version := flags.Bool("v", false, "      "+
 		"Display version.")
 
-	util.Check(flags.Parse(args[1:]))
+	check(flags.Parse(args[1:]))
 	argc := len(args)
 	if *help || argc < 2 {
 		fullUsage()
@@ -91,7 +89,7 @@ func main() {
 		UserWidth:       *userWidth,
 	}
 
-	util.Check(img.Init())
+	check(img.Init())
 
 	var writer viz.Writer
 	if img.ExportFilename == "" {
@@ -99,8 +97,17 @@ func main() {
 	} else {
 		var err error
 		writer, err = viz.NewFileWriter(img.ExportFilename)
-		util.Check(err)
+		check(err)
 	}
 
-	util.Check(img.Draw(writer))
+	check(img.Draw(writer))
+}
+
+// check prints the error message and exits
+// if err is not nil.
+func check(err error) {
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 }

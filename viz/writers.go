@@ -12,7 +12,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/codeliveroil/img/util"
+	"github.com/codeliveroil/img/terminal"
 )
 
 // Writer can be used to forward the output of the image
@@ -107,7 +107,7 @@ func (w *StdWriter) LineUp(count int) error {
 	w.b.Reset()
 
 	for i := 0; i < count; i++ {
-		err := util.RunCommand(nil, "tput", "cuu1")
+		err := terminal.LineUp()
 		if err != nil {
 			return err
 		}

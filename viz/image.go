@@ -6,7 +6,6 @@
 package viz
 
 import (
-	"errors"
 	"fmt"
 	"image"
 	//"image/color"
@@ -16,9 +15,8 @@ import (
 	_ "image/png"
 	"math"
 	"os"
-	"strconv"
 
-	"github.com/codeliveroil/img/util"
+	"github.com/codeliveroil/img/terminal"
 	"github.com/nfnt/resize"
 )
 
@@ -70,35 +68,15 @@ func (img *Image) Init() (err error) {
 	if img.UserWidth > 0 {
 		scale = float64(img.UserWidth) / float64(iw)
 	} else {
-		tput := func(cmd string) (int, error) {
-			stdout := &util.StdWriter{}
-
-			err := util.RunCommand(stdout, "tput", cmd)
-			if err != nil {
-				return -1, errors.New(fmt.Sprintf("couldn't determine %s: %s", cmd, err.Error()))
-			}
-			if len(stdout.Output) != 1 {
-				return -1, errors.New("unexpected output when determining " + cmd)
-			}
-			op, err := strconv.Atoi(stdout.Output[0])
-			if err != nil {
-				return -1, errors.New(fmt.Sprintf("couldn't parse %s: %s", cmd, err.Error()))
-			}
-			return op, nil
-		}
-		tw := 40
-		if imgFmt != "gif" || img.LoopCount == 0 {
-			tw, err = tput("cols")
-			if err != nil {
-				return err
-			}
-		}
-		th, err := tput("lines")
+		tw, th, err := terminal.Size()
 		if err != nil {
 			return err
 		}
+		if imgFmt == "gif" && img.LoopCount > 0 {
+			tw = 40
+		}
 		th = (th * 2) - 1       //-1 to account for the terminal prompt ($/#) that'll show up after the image is displayed
-		if tw < iw || th < ih { //scale up the image to fit the terminal
+		if tw < iw || th < ih { //scale down the image to fit the terminal
 			scaleW := float64(tw) / float64(iw)
 			scaleH := float64(th) / float64(ih)
 			scale = math.Min(scaleW, scaleH)
