@@ -6,9 +6,7 @@
 package viz
 
 import (
-	"fmt"
 	"image"
-	//"image/color"
 	"image/draw"
 	"image/gif"
 	_ "image/jpeg"
@@ -85,7 +83,9 @@ func (img *Image) Init() (err error) {
 
 	img.w = int(math.Floor(scale * float64(iw)))
 	img.h = int(math.Floor(scale * float64(ih)))
-	img.h = img.h / 2 //to account for the fact that each character is twice as long as is wide
+	if img.h%2 != 0 { //make the height even since we will be painting y and y+1 in every iteration
+		img.h -= 1
+	}
 
 	//Scale image frames
 	appendImg := func(f image.Image, delayMS int) {
@@ -102,7 +102,7 @@ func (img *Image) Init() (err error) {
 
 		img.frames = append(img.frames, frame{
 			picture: pic,
-			delay:   int(math.Ceil(float64(delayMS) / 10.0 * img.DelayMultiplier)), //GIFs will take long to render, so reduce the delay to achieve intended delay.
+			delay:   int(math.Ceil(float64(delayMS) / 5.0 * img.DelayMultiplier)), //GIFs will take long to render, so reduce the delay to achieve intended delay.
 		})
 	}
 
@@ -146,24 +146,24 @@ func (img *Image) Init() (err error) {
 
 // Draw renders the image into one of the
 // selected modes (stdout or file)
-func (img *Image) Draw(writer Writer) error {
+func (img *Image) Draw(canvas Canvas) error {
 	firstFrameDone := false
 	delay := 0
 	for i := 0; i < img.LoopCount; i++ {
 		for _, frame := range img.frames {
 			if firstFrameDone {
-				if err := writer.LineUp(img.h); err != nil {
+				if err := canvas.LineUp(img.h / 2); err != nil {
 					return err
 				}
-				if err := writer.Sleep(delay); err != nil {
+				if err := canvas.Sleep(delay); err != nil {
 					return err
 				}
 			}
-			for y := 0; y < img.h; y++ {
+			for y := 0; y < img.h; y = y + 2 {
 				for x := 0; x < img.w; x++ {
-					writer.Write(fmt.Sprintf("\x1b[48;5;%vm \x1b[0m", frame.picture[x][y]))
+					canvas.Paint(frame.picture[x][y], frame.picture[x][y+1])
 				}
-				err := writer.Write("\n")
+				err := canvas.NewLine()
 				if err != nil {
 					return err
 				}
@@ -172,5 +172,5 @@ func (img *Image) Draw(writer Writer) error {
 			delay = frame.delay
 		}
 	}
-	return writer.Close()
+	return canvas.Close()
 }

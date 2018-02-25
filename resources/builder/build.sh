@@ -9,6 +9,8 @@
 #
 ###########################################################
 
+set -e
+
 makepkg() {
   local os=$1
   local arch=$2
@@ -22,12 +24,15 @@ makepkg() {
   rm img
 }
 
+cd ../..
+
 echo "Cleaning..."
-rm -rf build
+
+[ -d build ] && rm -rf build
 mkdir build
 cd build
 
-cp ../install.sh .
+cp ../resources/builder/install.sh .
 makepkg darwin 386 macos
 makepkg linux 386 linux
 rm install.sh
