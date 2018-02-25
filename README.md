@@ -30,11 +30,11 @@ Demo
 ----
 _GIF:_
 
-<img src="readme/animated.gif" alt="GIF demo" width="65%" height="65%"/>
+<img src="resources/readme/animated.gif" alt="GIF demo" width="65%" height="65%"/>
 
 _JPEG/PNG:_
 
-<img src="readme/static.gif" alt="Static image demo" width="65%" height="65%"/>
+<img src="resources/readme/static.gif" alt="Static image demo" width="65%" height="65%"/>
 
 Library API for GO
 ------------------
@@ -51,7 +51,7 @@ if err := img.Init(); err != nil {
 }
 
 // Render the image
-if err := img.Draw(&viz.StdWriter{}); err != nil {
+if err := img.Draw(&viz.StdoutCanvas{}); err != nil {
 	//handle error
 }
 ```
