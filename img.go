@@ -19,32 +19,32 @@ import (
 func main() {
 	args := os.Args
 	flags := flag.NewFlagSet(os.Args[0], flag.ExitOnError)
-	print := func(msg string, args ...interface{}) {
+	printToErr := func(msg string, args ...interface{}) {
 		fmt.Fprintf(os.Stderr, msg, args...) //stderr because that's where 'flags.PrintDefaults()' prints to
 	}
 
 	fullUsage := func() {
-		print("Image viewer for Linux terminal emulators.\n")
-		print("  Supports PNG, JPEG and GIF.\n")
-		print("  Images can be rendered on screen (default) or exported to a shell script to\n")
-		print("  be rendered later (e.g. to display a logo during SSH login).\n")
-		print("  GIFs are animated and restricted to a 40 character width by default.\n")
-		print("  To obtain best quality rendering, try reducing the font size of the terminal.\n")
+		printToErr("Image viewer for Linux terminal emulators.\n")
+		printToErr("  Supports PNG, JPEG and GIF.\n")
+		printToErr("  Images can be rendered on screen (default) or exported to a shell script to\n")
+		printToErr("  be rendered later (e.g. to display a logo during SSH login).\n")
+		printToErr("  GIFs are animated and restricted to a 40 character width by default.\n")
+		printToErr("  To obtain best quality rendering, try reducing the font size of the terminal.\n")
 
 		flags.Usage()
 
-		print("\nExamples:\n")
-		print("  %s car.png\n", path.Base(os.Args[0]))
-		print("  %s logo.gif\n", path.Base(os.Args[0]))
-		print("  %s -l 2 wheel.gif\n", path.Base(os.Args[0]))
+		printToErr("\nExamples:\n")
+		printToErr("  %s car.png\n", path.Base(os.Args[0]))
+		printToErr("  %s logo.gif\n", path.Base(os.Args[0]))
+		printToErr("  %s -l 2 wheel.gif\n", path.Base(os.Args[0]))
 	}
 
 	flags.Usage = func() {
-		print("\nUsage: %s [options] file\n", path.Base(os.Args[0]))
+		printToErr("\nUsage: %s [options] file\n", path.Base(os.Args[0]))
 
-		print("\nOptions:\n")
+		printToErr("\nOptions:\n")
 		printFlag := func(f *flag.Flag) { //go's default 2 line display for non-bools is not appealing, use custom printer.
-			print("  -%v %v\n", f.Name, f.Usage)
+			printToErr("  -%v %v\n", f.Name, f.Usage)
 		}
 		flags.VisitAll(printFlag)
 	}
@@ -56,7 +56,7 @@ func main() {
 	loopCount := flags.Int("l", 1, "num   "+
 		"Specify how many times the GIF should be looped or set to 0 to\n           "+
 		"render the first frame only.")
-	delayMultiplier := flags.Float64("d", 1.0, "num   "+
+	delayMultiplier := flags.Float64("s", 1.0, "num   "+
 		"Specify a multiplier to change the speed of animation.")
 	help := flags.Bool("h", false, "      "+
 		"Display help screen.")
@@ -75,7 +75,7 @@ func main() {
 	}
 	filename := args[argc-1]
 	if filename == "" {
-		print("image file not specified.\n")
+		printToErr("image file not specified.\n")
 		flags.Usage()
 		os.Exit(1)
 	}
@@ -91,16 +91,16 @@ func main() {
 
 	check(img.Init())
 
-	var writer viz.Writer
+	var canvas viz.Canvas
 	if img.ExportFilename == "" {
-		writer = &viz.StdWriter{}
+		canvas = &viz.StdoutCanvas{}
 	} else {
 		var err error
-		writer, err = viz.NewFileWriter(img.ExportFilename)
+		canvas, err = viz.NewFileCanvas(img.ExportFilename)
 		check(err)
 	}
 
-	check(img.Draw(writer))
+	check(img.Draw(canvas))
 }
 
 // check prints the error message and exits
