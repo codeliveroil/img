@@ -51,7 +51,7 @@ if err := img.Init(); err != nil {
 }
 
 // Render the image
-if err := img.Draw(&viz.StdWriter{}); err != nil {
+if err := img.Draw(&viz.StdoutCanvas{}); err != nil {
 	//handle error
 }
 ```
