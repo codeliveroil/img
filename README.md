@@ -55,3 +55,12 @@ if err := img.Draw(&viz.StdoutCanvas{}); err != nil {
 	//handle error
 }
 ```
+
+
+Compile from source
+-------------------
+
+```
+go get github.com/codeliveroil/img
+make
+```

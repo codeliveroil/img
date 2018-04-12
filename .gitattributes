@@ -1,1 +1,1 @@
-testdata/*.sh linguist-generated
+resources/testdata/*.sh linguist-generated
