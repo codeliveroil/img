@@ -16,7 +16,7 @@ Download the latest release for your operating system in the [releases page](htt
 Usage
 -----
 ```
-img -h
+img -help
 ```
 
 **Examples:**
