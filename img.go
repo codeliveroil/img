@@ -52,7 +52,7 @@ func main() {
 		os.Exit(0)
 	}
 	if *version {
-		fmt.Println("1.0")
+		fmt.Println("1.1")
 		os.Exit(0)
 	}
 	filename := args[argc-1]
