@@ -24,7 +24,7 @@ cd -
 ../../img -o disposalNone.sh disposalNone.gif
 ../../img -o disposalNoneTransparency.sh disposalNoneTransparency.gif
 ../../img -o disposalUnspecified.sh disposalUnspecified.gif
-../../img -l 3 -s 10 -w 60 -o all.sh disposalNone.gif
+../../img -l 3 -s 2 -w 60 -o all.sh disposalNone.gif
 
 echo ""
 echo "Test data generated."

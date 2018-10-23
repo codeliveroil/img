@@ -38,7 +38,9 @@ func main() {
 	userWidth := flags.Int("w", 0, "Use specified `width` instead of auto-computing it.")
 	exportFilename := flags.String("o", "", "Export image as a shell script to specified `file`.")
 	loopCount := flags.Int("l", 1, "Specify the `num`ber of times the GIF should be looped or set to 0 to render the first frame only.")
-	delayMultiplier := flags.Float64("s", 1.0, "Specify a multiplier to change the `speed` of animation.")
+	delayMultiplier := flags.Float64("s", 1.0, "Specify a multiplier to change the `speed` of animation. "+
+		"Larger the multiplier, slower the speed of animation. "+
+		"For example, 2 decreases the speed to 50% and 0.5 increases the speed to 200%.")
 	version := flags.Bool("v", false, "Display version.")
 
 	check(flags.Parse(args[1:]))

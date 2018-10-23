@@ -72,6 +72,6 @@ func TestGIF(t *testing.T) {
 	}
 
 	// Test all parameters
-	img := export("disposalNone.gif", 3, 10, 60)
+	img := export("disposalNone.gif", 3, 2, 60)
 	validate("all.sh", img, t)
 }

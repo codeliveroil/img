@@ -11,8 +11,6 @@ import (
 	"fmt"
 	"os"
 	"time"
-
-	"github.com/codeliveroil/img/terminal"
 )
 
 // Canvas is the destination (e.g. stdout vs file) where the
@@ -75,9 +73,7 @@ func (fc *FileCanvas) NewLine() error {
 
 func (fc *FileCanvas) LineUp(count int) error {
 	fc.write("'\n") //close echo
-	for i := 0; i < count; i++ {
-		fc.write("tput cuu1\n")
-	}
+	fc.write(fmt.Sprintf("echo -n '\033[%dA'\n", count))
 	fc.write("echo -n '")
 	return fc.writeError
 }
@@ -121,13 +117,7 @@ func (sc *StdoutCanvas) NewLine() error {
 func (sc *StdoutCanvas) LineUp(count int) error {
 	fmt.Printf(sc.b.String())
 	sc.b.Reset()
-
-	for i := 0; i < count; i++ {
-		err := terminal.LineUp()
-		if err != nil {
-			return err
-		}
-	}
+	sc.b.WriteString(fmt.Sprintf("\033[%dA", count))
 	return nil
 }
 

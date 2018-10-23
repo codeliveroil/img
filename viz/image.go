@@ -102,7 +102,7 @@ func (img *Image) Init() (err error) {
 
 		img.frames = append(img.frames, frame{
 			picture: pic,
-			delay:   int(math.Ceil(float64(delayMS) / 5.0 * img.DelayMultiplier)), //GIFs will take long to render, so reduce the delay to achieve intended delay.
+			delay:   int(math.Ceil(float64(delayMS) * img.DelayMultiplier)), //GIFs will take long to render, so reduce the delay to achieve intended delay.
 		})
 	}
 

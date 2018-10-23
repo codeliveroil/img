@@ -5,13 +5,7 @@
 
 package terminal
 
-import (
-	"io"
-	"os"
-	"os/exec"
-
-	systerm "golang.org/x/crypto/ssh/terminal"
-)
+import systerm "golang.org/x/crypto/ssh/terminal"
 
 // Size returns the dimensions of the terminal.
 // This function can be overriden for test cases
@@ -19,24 +13,4 @@ import (
 // in test environments
 var Size = func() (width int, height int, err error) {
 	return systerm.GetSize(0)
-}
-
-// LineUp moves the cursor one line up.
-func LineUp() error {
-	return runCommand(nil, "tput", "cuu1")
-}
-
-// runCommand runs the command and the stdout is redirected
-// to the given stdout (or OS's stdout if given is nil) and
-// the OS's stderr.
-func runCommand(stdout io.Writer, command string, args ...string) (exitCode error) {
-	cmd := exec.Command(command, args...)
-	if stdout == nil {
-		cmd.Stdout = os.Stdout
-	} else {
-		cmd.Stdout = stdout
-	}
-	cmd.Stderr = os.Stderr
-	cmd.Stdin = os.Stdin
-	return cmd.Run()
 }
