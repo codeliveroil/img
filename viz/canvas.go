@@ -64,7 +64,7 @@ func (fc *FileCanvas) write(str string) error {
 }
 
 func (fc *FileCanvas) Paint(topColor, bottomColor uint8) error {
-	return fc.write(makeTwoPixels(topColor, bottomColor))
+	return fc.write(PaintCell(topColor, bottomColor))
 }
 
 func (fc *FileCanvas) NewLine() error {
@@ -105,7 +105,7 @@ type StdoutCanvas struct {
 }
 
 func (sc *StdoutCanvas) Paint(topColor, bottomColor uint8) error {
-	sc.b.WriteString(makeTwoPixels(topColor, bottomColor))
+	sc.b.WriteString(PaintCell(topColor, bottomColor))
 	return nil
 }
 
@@ -131,7 +131,9 @@ func (sc *StdoutCanvas) Close() error {
 	return nil
 }
 
-func makeTwoPixels(topColor, bottomColor uint8) string {
+// PaintCell returns a lower-half-block character (▄) with the background set to the top color and the foreground
+// set to the bottomColor.
+func PaintCell(topColor, bottomColor uint8) string {
 	//Use the 'lower half block' character (▄) for drawing as opposed to the 'upper half block' (▀) because if the
 	//terminal character height is odd then the terminal aligns ▀ one line below the top rendering a background shade
 	//on the top line of the character

@@ -16,7 +16,7 @@ import (
 	"github.com/codeliveroil/img/viz"
 )
 
-const testData = "resources/testData/"
+const testData = "resources/testdata/"
 
 func read(filename string, t *testing.T) string {
 	bytes, err := ioutil.ReadFile(filename)
