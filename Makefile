@@ -48,7 +48,7 @@ plat: setup #!## Cross compile to a desired platform
 		break;                                                                 \
 	done
 
-dist: setup
+dist: test setup
 	@make goos=darwin goarch=amd64 name=macos dist_internal
 	@make goos=linux goarch=amd64 name=linux dist_internal
 	@make goos=linux goarch=arm name=linux-arm dist_internal
