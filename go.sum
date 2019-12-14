@@ -1,5 +1,7 @@
 github.com/codeliveroil/niceflags v0.0.0-20190304194429-c5cb0266cb0a h1:GXjI5o0n/wWrQIKakdr6SxEXiKcIT8dAtcgc0Iza9No=
 github.com/codeliveroil/niceflags v0.0.0-20190304194429-c5cb0266cb0a/go.mod h1:xjmmgazdou8nQUQe9JqXK+p5TDcZk1t8T0Oqfqo7PnM=
+github.com/codeliveroil/niceflags v0.0.0-20191214040432-93748c812d90 h1:lnhmqD/rTBk+E3Q+35PBHMvOeBPGYo0IXGfm0kwsk0k=
+github.com/codeliveroil/niceflags v0.0.0-20191214040432-93748c812d90/go.mod h1:irK8VT7NannXpC0XT8EcfoGsPcplgrO2TYbnkFv4Ot8=
 github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646 h1:zYyBkD/k9seD2A7fsi6Oo2LfFZAehjjQMERAvZLEDnQ=
 github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646/go.mod h1:jpp1/29i3P1S/RLdc7JQKbRpFeM1dOBd8T9ki5s+AY8=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
