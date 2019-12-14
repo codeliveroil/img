@@ -21,7 +21,7 @@ brew install img
 ```
 
 #### Other
-Download the [latest release](/releases/latest) for your operating system and machine architecture. If one is not available, you can very easily [compile from source](#compile-from-source).
+Download the [latest release](../../releases/latest) for your operating system and machine architecture. If one is not available, you can very easily [compile from source](#compile-from-source).
 
 ## Usage
 ```
@@ -70,7 +70,7 @@ make install
 ### Cross compile for a different platform
 1. Build
 	```
-	make plat
+	make platform
 	```
 1. Follow the prompts and select a platform
 1. The binary will be available in the `build` folder

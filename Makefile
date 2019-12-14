@@ -13,7 +13,7 @@ BINARY_NAME := $(notdir $(patsubst %/,%,$(dir $(MKFILE_PATH))))
 BINARY_PATH := $(BUILD_DIR)/$(BINARY_NAME)
 
 # Exposed targets
-.PHONY: all build install test clean plat dist setup dist_internal help
+.PHONY: all build install test clean platform dist setup dist_internal help
 
 build: setup #!## Build binary
 	go build -v -o $(BINARY_PATH)
@@ -39,7 +39,7 @@ clean: #!## Clean build environment
 	go clean ./...
 	rm -rf $(BUILD_DIR)
 
-plat: setup #!## Cross compile to a desired platform
+platform: setup #!## Cross compile to a desired platform
 	@echo "Select a platform:"
 	@select p in $$(go tool dist list); do                                     \
 		[ "$$p" == "" ] && echo "Invalid selection" && exit;                   \
