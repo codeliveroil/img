@@ -1,43 +1,41 @@
-img - Command-line image viewer
-===============================
+# img - Command-line image viewer
 
-A command line tool to view images (PNG, GIF, JPEG) right on the terminal. `img` comes in handy in the following scenarios:
+A command line tool to view images (PNG, JPEG, GIF) right on the terminal. `img` comes in handy in the following scenarios:
 - to view images over SSH and VPN connections (where it's cumbersome to grab images and view them on the host machine)
 - can be used to generate splash screens for Linux logins (e.g. motd)
 - you never have to leave the terminal if you are working with image generation code
 - just for fun!
 
-_Supported OSes:_ macOS, Linux
+#### GIF
+<img src="resources/readme/animated.gif" alt="GIF demo" width="65%" height="65%"/>
 
-Installation
-------------
-Download the latest release for your operating system in the [releases page](https://github.com/codeliveroil/img/releases), unzip and use the binary (`img`) or run `install.sh`.
+#### JPEG/PNG
+<img src="resources/readme/static.gif" alt="Static image demo" width="65%" height="65%"/>
 
-Usage
------
+## Installation
+
+#### macOS
+```
+brew tap codeliveroil/apps
+brew install img
+```
+
+#### Other
+Download the [latest release](/releases/latest) for your operating system and machine architecture. If one is not available, you can very easily [compile from source](#compile-from-source).
+
+## Usage
 ```
 img -help
 ```
 
-**Examples:**
+#### Examples
 ```
 img car.png
 img -w logo.sh logo.gif
 img -l 2 wheel.gif
 ```
 
-Demo
-----
-_GIF:_
-
-<img src="resources/readme/animated.gif" alt="GIF demo" width="65%" height="65%"/>
-
-_JPEG/PNG:_
-
-<img src="resources/readme/static.gif" alt="Static image demo" width="65%" height="65%"/>
-
-Library API for GO
-------------------
+## Library API for Go
 
 ```golang
 img := viz.Image{
@@ -57,10 +55,22 @@ if err := img.Draw(&viz.StdoutCanvas{}); err != nil {
 ```
 
 
-Compile from source
--------------------
+## Compile from source
 
+### Setup
+1. Install [Go](https://golang.org/)
+1. Clone this repository
+
+### Build for your current platform
 ```
-go get github.com/codeliveroil/img
 make
+make install
 ```
+
+### Cross compile for a different platform
+1. Build
+	```
+	make plat
+	```
+1. Follow the prompts and select a platform
+1. The binary will be available in the `build` folder
